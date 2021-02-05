@@ -136,9 +136,9 @@ public class Main extends Application {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if ((i + j) % 2 == 0) {
-                    gc.setFill(Color.web("AAD751"));
+                    gc.setFill(Color.web("9ACD32"));
                 } else {
-                    gc.setFill(Color.web("A2D149"));
+                    gc.setFill(Color.web("8D8D8D"));
                 }
                 gc.fillRect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
             }
