@@ -162,6 +162,8 @@ public class Main extends Application {
     }
 
     private void drawFood(GraphicsContext gc) {
+        //Testing code push
+
         gc.drawImage(foodImage, foodX * SQUARE_SIZE, foodY * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
     }
 
