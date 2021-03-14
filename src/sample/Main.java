@@ -28,9 +28,9 @@ import java.util.List;
 public class Main extends Application {
 
     private static final int WIDTH = 800;
-    private static final int HEIGHT = 800;
+    private static final int HEIGHT = WIDTH;
     private static final int ROWS = 20;
-    private static final int COLUMNS = 20;
+    private static final int COLUMNS = ROWS;
     private static final int SQUARE_SIZE = WIDTH / ROWS;
     private static final String[] FOODS_IMAGE = new String[]{ "/img/ic_bird.png","/img/ic_orange.png", "/img/ic_apple.png",
             "/img/ic_cherry.png", "/img/ic_rat.png", "/img/ic_berry.png","/img/ic_rat.png","/img/ic_bird.png","/img/ic_cat.png",
@@ -42,6 +42,7 @@ public class Main extends Application {
 
     private Image snakeHeadImage;
     private Image snakeBodyImage;
+    private static final String[] TREE_IMAGE = new String[]{"/img/tree.png"};
 
     private static final int RIGHT = 0;
     private static final int LEFT = 1;
@@ -54,11 +55,16 @@ public class Main extends Application {
     private Image foodImage;
     private int foodX;
     private int foodY;
+    private List<Integer> treeListX = new ArrayList<>();
+    private List<Integer> treeListY = new ArrayList<>();
+    private Image treeImage;
     private boolean gameOver;
     private int currentDirection;
     private int score = 0;
     private Scene scene;
     private Timeline timeline;
+    private int treeCount = 0;
+    private boolean isTreeEnabled = false;
 
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
@@ -94,6 +100,8 @@ public class Main extends Application {
                     if (currentDirection != UP) {
                         currentDirection = DOWN;
                     }
+                } else if(code == KeyCode.TAB){
+                    isTreeEnabled = !isTreeEnabled;
                 }
             }
         });
@@ -104,7 +112,9 @@ public class Main extends Application {
         snakeHead = snakeBody.get(0);
 
         generateFood();
-        timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> run(gc)));
+        generateTree();
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> run(gc)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
@@ -119,6 +129,14 @@ public class Main extends Application {
 
         drawBackground(gc);
         drawFood(gc);
+
+        if(isTreeEnabled) {
+            drawTree(gc);
+        }else{
+            treeListX = new ArrayList<>();
+            treeListY = new ArrayList<>();
+        }
+//        drawSnake(gc);
         drawSnake(gc, currentDirection);
         drawScore();
 
@@ -141,6 +159,7 @@ public class Main extends Application {
                 moveDown();
                 break;
         }
+
         gameOver();
         eatFood();
     }
@@ -176,8 +195,40 @@ public class Main extends Application {
         }
     }
 
+
+    private void generateTree() {
+        start:
+        while (true) {
+            int treeX = (int) (Math.random() * ROWS);
+            int treeY = (int) (Math.random() * COLUMNS);
+
+            for (Point snake : snakeBody) {
+                if ((snake.getX() == treeX && snake.getY() == treeY) || (foodX == treeX && foodY == treeY)) {
+                    continue start;
+                }
+            }
+
+            for (int i=0; i < treeListX.size() ; i++) {
+                if ((treeListX.get(i) == treeX && treeListY.get(i) == treeY)) {
+                    continue start;
+                }
+            }
+            treeListX.add(treeX);
+            treeListY.add(treeY);
+            treeImage = new Image(TREE_IMAGE[0]);
+            break;
+        }
+    }
+
     private void drawFood(GraphicsContext gc) {
         gc.drawImage(foodImage, foodX * SQUARE_SIZE, foodY * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+    }
+
+    private void drawTree(GraphicsContext gc) {
+        for(int i=0; i < treeListX.size() ; i++){
+            gc.drawImage(treeImage, treeListX.get(i) * SQUARE_SIZE, treeListY.get(i) * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+        }
+
     }
 
     private void drawSnake(GraphicsContext gc, int currentDirection) {
@@ -230,7 +281,12 @@ public class Main extends Application {
         if (snakeHead.x < 0 || snakeHead.y < 0 || snakeHead.x * SQUARE_SIZE >= WIDTH || snakeHead.y * SQUARE_SIZE >= HEIGHT) {
             gameOver = true;
         }
-
+        for(int i=0; i < treeListX.size() ; i++) {
+            if (snakeHead.x == treeListX.get(i) && snakeHead.y == treeListY.get(i)) {
+                gameOver = true;
+                break;
+            }
+        }
         //destroy itself
         for (int i = 1; i < snakeBody.size(); i++) {
             if (snakeHead.x == snakeBody.get(i).getX() && snakeHead.getY() == snakeBody.get(i).getY()) {
@@ -244,7 +300,12 @@ public class Main extends Application {
         if (snakeHead.getX() == foodX && snakeHead.getY() == foodY) {
             snakeBody.add(new Point(-1, -1));
             generateFood();
+            generateTree();
             score += 5;
+            if(treeCount > 0 && isTreeEnabled){
+                score = score + (5*(treeCount));
+            }
+            treeCount++;
         }
     }
 
