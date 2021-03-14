@@ -2,12 +2,14 @@ package sample;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,17 +25,23 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Main extends Application {
 
     private static final int WIDTH = 800;
-    private static final int HEIGHT = WIDTH;
+    private static final int HEIGHT = 800;
     private static final int ROWS = 20;
-    private static final int COLUMNS = ROWS;
+    private static final int COLUMNS = 20;
     private static final int SQUARE_SIZE = WIDTH / ROWS;
-    private static final String[] FOODS_IMAGE = new String[]{"/img/ic_orange.png", "/img/ic_apple.png", "/img/ic_cherry.png",
-            "/img/ic_berry.png", "/img/ic_coconut_.png", "/img/ic_peach.png", "/img/ic_watermelon.png", "/img/ic_orange.png",
+    private static final String[] FOODS_IMAGE = new String[]{ "/img/ic_bird.png","/img/ic_orange.png", "/img/ic_apple.png",
+            "/img/ic_cherry.png", "/img/ic_rat.png", "/img/ic_berry.png","/img/ic_rat.png","/img/ic_bird.png","/img/ic_cat.png",
+            "/img/ic_coconut_.png", "/img/ic_peach.png","/img/ic_cat.png", "/img/ic_watermelon.png", "/img/ic_orange.png",
             "/img/ic_pomegranate.png"};
+
+    private static String SNAKE_HEAD_IMAGE ;
+    private static String SNAKE_BODY_IMAGE ;
+
+    private Image snakeHeadImage;
+    private Image snakeBodyImage;
 
     private static final int RIGHT = 0;
     private static final int LEFT = 1;
@@ -49,18 +57,23 @@ public class Main extends Application {
     private boolean gameOver;
     private int currentDirection;
     private int score = 0;
+    private Scene scene;
+    private Timeline timeline;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
         Group root = new Group();
-        Canvas canvas = new Canvas(WIDTH, HEIGHT);
+        javafx.scene.canvas.Canvas canvas = new Canvas(WIDTH, HEIGHT);
         root.getChildren().add(canvas);
-        Scene scene = new Scene(root);
+        scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
         gc = canvas.getGraphicsContext2D();
+    }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        createScene(primaryStage);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -89,23 +102,24 @@ public class Main extends Application {
             snakeBody.add(new Point(5, ROWS / 2));
         }
         snakeHead = snakeBody.get(0);
-        generateFood();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(130), e -> run(gc)));
+        generateFood();
+        timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> run(gc)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
     private void run(GraphicsContext gc) {
         if (gameOver) {
-            gc.setFill(Color.RED);
-            gc.setFont(new Font("Digital-7", 70));
+            gc.setFill(Color.BLACK);
+            gc.setFont(new Font("Digital-7", 50));
             gc.fillText("Game Over", WIDTH / 3.5, HEIGHT / 2);
             return;
         }
+
         drawBackground(gc);
         drawFood(gc);
-        drawSnake(gc);
+        drawSnake(gc, currentDirection);
         drawScore();
 
         for (int i = snakeBody.size() - 1; i >= 1; i--) {
@@ -127,7 +141,6 @@ public class Main extends Application {
                 moveDown();
                 break;
         }
-
         gameOver();
         eatFood();
     }
@@ -136,9 +149,11 @@ public class Main extends Application {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if ((i + j) % 2 == 0) {
-                    gc.setFill(Color.web("AAD751"));
+                   // gc.setFill(Color.web("AAD751"));
+                    gc.setFill(Color.web("WHITE"));//#c3e0b3//  fba01a  //b3bef2
                 } else {
-                    gc.setFill(Color.web("A2D149"));
+                    //gc.setFill(Color.web("A2D149"));
+                    gc.setFill(Color.web("#9bd7d5")); //#ffffff//  9bd7d5  //9bd7d5
                 }
                 gc.fillRect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
             }
@@ -162,18 +177,36 @@ public class Main extends Application {
     }
 
     private void drawFood(GraphicsContext gc) {
-        //Testing code push
-
         gc.drawImage(foodImage, foodX * SQUARE_SIZE, foodY * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
     }
 
-    private void drawSnake(GraphicsContext gc) {
-        gc.setFill(Color.web("4674E9"));
-        gc.fillRoundRect(snakeHead.getX() * SQUARE_SIZE, snakeHead.getY() * SQUARE_SIZE, SQUARE_SIZE - 1, SQUARE_SIZE - 1, 35, 35);
+    private void drawSnake(GraphicsContext gc, int currentDirection) {
+        if (currentDirection  == 0){//RIGHT
+            SNAKE_HEAD_IMAGE = "img/snake_face_right.png";
+            snakeHeadImage = new Image(SNAKE_HEAD_IMAGE);
+            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(), SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
+        }
+        if (currentDirection  == 1){//LEFT
+            SNAKE_HEAD_IMAGE = "img/snake_face_left.png";
+            snakeHeadImage = new Image(SNAKE_HEAD_IMAGE);
+            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(), SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
+        }
+        if (currentDirection  == 2){//UP
+            SNAKE_HEAD_IMAGE = "img/snake_face_up.png";
+            snakeHeadImage = new Image(SNAKE_HEAD_IMAGE);
+            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(), SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
+        }
+        if (currentDirection  == 3){//DOWN
+            SNAKE_HEAD_IMAGE = "img/snake_face_down.png";
+            snakeHeadImage = new Image(SNAKE_HEAD_IMAGE);
+            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(), SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
+        }
 
         for (int i = 1; i < snakeBody.size(); i++) {
-            gc.fillRoundRect(snakeBody.get(i).getX() * SQUARE_SIZE, snakeBody.get(i).getY() * SQUARE_SIZE, SQUARE_SIZE - 1,
-                    SQUARE_SIZE - 1, 20, 20);
+            SNAKE_BODY_IMAGE = "img/snake_body.png";
+            snakeBodyImage = new Image(SNAKE_BODY_IMAGE);
+            gc.drawImage(snakeBodyImage , snakeBody.get(i).getX() * SQUARE_SIZE, snakeBody.get(i).getY() * SQUARE_SIZE,
+                    SQUARE_SIZE-3, SQUARE_SIZE-3);
         }
     }
 
@@ -216,12 +249,8 @@ public class Main extends Application {
     }
 
     private void drawScore() {
-        gc.setFill(Color.WHITE);
-        gc.setFont(new Font("Digital-7", 35));
-        gc.fillText("Score: " + score, 10, 35);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+        gc.setFill(Color.BLACK);
+        gc.setFont(new Font("Digital-7", 30));
+        gc.fillText("Score: " + score, 20, 30);
     }
 }
