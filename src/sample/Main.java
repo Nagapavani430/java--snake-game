@@ -13,11 +13,14 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -27,7 +30,7 @@ import java.util.List;
 
 public class Main extends Application {
 
-    private static final int WIDTH = 800;
+    private static final int WIDTH = 700;
     private static final int HEIGHT = WIDTH;
     private static final int ROWS = 20;
     private static final int COLUMNS = ROWS;
@@ -37,6 +40,7 @@ public class Main extends Application {
             "/img/ic_coconut_.png", "/img/ic_peach.png","/img/ic_cat.png", "/img/ic_watermelon.png", "/img/ic_orange.png",
             "/img/ic_pomegranate.png"};
 
+    private static final Image RESET_IMAGE= new Image("/img/reset.png");//Rishi`
     private static String SNAKE_HEAD_IMAGE ;
     private static String SNAKE_BODY_IMAGE ;
 
@@ -65,6 +69,8 @@ public class Main extends Application {
     private Timeline timeline;
     private int treeCount = 0;
     private boolean isTreeEnabled = false;
+    Text Reset;//Rishi
+    private boolean gameRestart = false;//Rishi
 
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
@@ -102,6 +108,12 @@ public class Main extends Application {
                     }
                 } else if(code == KeyCode.TAB){
                     isTreeEnabled = !isTreeEnabled;
+                }
+
+                else if (code == KeyCode.R) {//Rishi
+                    gameOver=false;
+                    gameRestart=true;
+                    reset(gc);
                 }
             }
         });
@@ -164,6 +176,29 @@ public class Main extends Application {
         eatFood();
     }
 
+    ////Rishi start
+    public void reset(GraphicsContext gc) {
+
+        snakeBody.clear();
+        for(int i=0;i<3;i++){
+            snakeBody.add(new Point(5, ROWS / 2));
+
+        }
+        snakeHead = snakeBody.get(0);
+        gc.setFill(Color.BLUE);
+        gc.setFont(new javafx.scene.text.Font("Arial", 30));
+
+        Light.Point pointLight = new Light.Point(500, 500, 500, Color.BLACK);
+        Lighting lighting = new Lighting(pointLight);
+        gc.applyEffect(lighting);
+        gc.fillText("Restarting New Game", 600/2, HEIGHT / 4);
+        gc.drawImage(RESET_IMAGE,250,250,250,250);
+        score=0;
+        currentDirection=0;
+    }
+
+    /////Rishi End
+
     private void drawBackground(GraphicsContext gc) {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
@@ -219,6 +254,7 @@ public class Main extends Application {
             break;
         }
     }
+
 
     private void drawFood(GraphicsContext gc) {
         gc.drawImage(foodImage, foodX * SQUARE_SIZE, foodY * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
