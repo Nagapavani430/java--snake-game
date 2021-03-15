@@ -23,7 +23,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,9 +139,9 @@ public class Main extends Application {
 
     private void run(GraphicsContext gc) {
         if (gameOver) {
-            gc.setFill(Color.BLACK);
-            gc.setFont(new Font("Digital-7", 50));
-            gc.fillText("Game Over", WIDTH / 3.5, HEIGHT / 2);
+            gc.setFill(Color.BLUEVIOLET);
+            gc.setFont(new Font("Digital-7", 40));
+            gc.fillText("Game Over!" + "\n Final Score: " + score + "\n Press c to Cheat", WIDTH / 3.5, HEIGHT / 2);
             return;
         }
 
