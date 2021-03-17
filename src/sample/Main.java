@@ -18,6 +18,8 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -26,6 +28,7 @@ import javafx.util.Duration;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import java.awt.Point;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,6 +137,7 @@ public class Main extends Application {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> run(gc)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+        music();
     }
 
     private void run(GraphicsContext gc) {
@@ -326,6 +330,7 @@ public class Main extends Application {
     public void gameOver() {
         if (snakeHead.x < 0 || snakeHead.y < 0 || snakeHead.x * SQUARE_SIZE >= WIDTH || snakeHead.y * SQUARE_SIZE >= HEIGHT) {
             gameOver = true;
+            mediaPlayer.stop();
         }
         for(int i=0; i < treeListX.size() ; i++) {
             if (snakeHead.x == treeListX.get(i) && snakeHead.y == treeListY.get(i)) {
@@ -368,6 +373,7 @@ public class Main extends Application {
 
     private void cheat(){
         gameOver=false;
+        mediaPlayer.play();
         cheat_mode=!cheat_mode;
         score=score/2; // should we round off here?
         snakeBody.clear();
@@ -377,4 +383,13 @@ public class Main extends Application {
         }
         snakeHead = snakeBody.get(0);
     }
+
+    MediaPlayer mediaPlayer;
+    public void music() {
+        String s = "src/sample/gamemusic.wav";
+        Media h = new Media(Paths.get(s).toUri().toString());
+        mediaPlayer = new MediaPlayer(h);
+        mediaPlayer.play();
+    }
+
 }

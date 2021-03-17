@@ -1,3 +1,4 @@
 .idea
-Snake-main.iml
+*.iml
 .DS_STORE
+out/*
