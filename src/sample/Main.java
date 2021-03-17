@@ -23,7 +23,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,8 @@ public class Main extends Application {
     private boolean isTreeEnabled = false;
     Text Reset;//Rishi
     private boolean gameRestart = false;//Rishi
+    private boolean cheat_mode = false;
+
 
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
@@ -115,6 +118,9 @@ public class Main extends Application {
                     gameRestart=true;
                     reset(gc);
                 }
+                else if (code == KeyCode.C) {
+                    cheat();
+                }
             }
         });
 
@@ -133,9 +139,9 @@ public class Main extends Application {
 
     private void run(GraphicsContext gc) {
         if (gameOver) {
-            gc.setFill(Color.BLACK);
-            gc.setFont(new Font("Digital-7", 50));
-            gc.fillText("Game Over", WIDTH / 3.5, HEIGHT / 2);
+            gc.setFill(Color.BLUEVIOLET);
+            gc.setFont(new Font("Digital-7", 40));
+            gc.fillText("Game Over!" + "\n Final Score: " + score + "\n Press c to Cheat", WIDTH / 3.5, HEIGHT / 2);
             return;
         }
 
@@ -148,7 +154,6 @@ public class Main extends Application {
             treeListX = new ArrayList<>();
             treeListY = new ArrayList<>();
         }
-//        drawSnake(gc);
         drawSnake(gc, currentDirection);
         drawScore();
 
@@ -346,8 +351,22 @@ public class Main extends Application {
     }
 
     private void drawScore() {
-        gc.setFill(Color.BLACK);
-        gc.setFont(new Font("Digital-7", 30));
-        gc.fillText("Score: " + score, 20, 30);
+        gc.setFill(Color.BLUEVIOLET);
+        gc.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        gc.setTextAlign(TextAlignment.JUSTIFY);
+        gc.fillText("Score: " + score, 10, 35);
     }
+
+    private void cheat(){
+        gameOver=false;
+        cheat_mode=!cheat_mode;
+        score=score/2; // should we round off here?
+        snakeBody.clear();
+        for(int i=0;i<3;i++){
+            snakeBody.add(new Point(5, ROWS / 2));
+
+        }
+        snakeHead = snakeBody.get(0);
+    }
+
 }
