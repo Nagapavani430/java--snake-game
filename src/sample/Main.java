@@ -383,4 +383,8 @@ public class Main extends Application {
         mediaPlayer.play();
     }
 
+    public static void main(String[] args) {
+        Application.launch(args);
+
+    }
 }
