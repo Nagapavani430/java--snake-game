@@ -123,6 +123,7 @@ public class Main extends Application {
                 }
                 else if (code == KeyCode.C) {
                     cheat();
+
                 }
             }
         });
@@ -160,6 +161,7 @@ public class Main extends Application {
         }
         drawSnake(gc, currentDirection);
         drawScore();
+
 
         for (int i = snakeBody.size() - 1; i >= 1; i--) {
             snakeBody.get(i).x = snakeBody.get(i - 1).x;
@@ -253,7 +255,8 @@ public class Main extends Application {
             }
 
             for (int i=0; i < treeListX.size() ; i++) {
-                if ((treeListX.get(i) == treeX && treeListY.get(i) == treeY)) {
+                if ((treeListX.get(i) == treeX && treeListY.get(i) == treeY))
+                {
                     continue start;
                 }
             }
@@ -261,6 +264,8 @@ public class Main extends Application {
             treeListY.add(treeY);
             treeImage = new Image(TREE_IMAGE[0]);
             break;
+
+
         }
     }
 
@@ -330,6 +335,7 @@ public class Main extends Application {
         for(int i=0; i < treeListX.size() ; i++) {
             if (snakeHead.x == treeListX.get(i) && snakeHead.y == treeListY.get(i)) {
                 gameOver = true;
+                mediaPlayer.stop();
                 break;
             }
         }
