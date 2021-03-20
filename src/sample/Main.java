@@ -77,7 +77,6 @@ public class Main extends Application {
     private boolean gameRestart = false;//Rishi
     private boolean cheat_mode = false;
 
-
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
         Group root = new Group();
@@ -144,9 +143,15 @@ public class Main extends Application {
 
     private void run(GraphicsContext gc) {
         if (gameOver) {
-            gc.setFill(Color.BLUEVIOLET);
-            gc.setFont(new Font("Digital-7", 40));
-            gc.fillText("Game Over!" + "\n Final Score: " + score + "\n Press c to Cheat", WIDTH / 3.5, HEIGHT / 2);
+//            gc.setFill(Color.BLUEVIOLET);
+            gc.setFill(Color.BLACK);
+            gc.setFont(new Font("Digital-7", 25));
+//            gc.fillText("Game Over!" + "\n Final Score: " + score + "\n Press c to Cheat",
+//                    WIDTH / 3.5, HEIGHT / 2);
+            gc.fillText("Oops, Game Over!" + "\n Your Final Score is " + score +
+                            "\n Hurry... Press 'c/C' to cheat and save the game" +
+                            "\n *score will be deducted* for cheat",
+                    WIDTH / 3.5, HEIGHT / 2);
             return;
         }
 
@@ -362,10 +367,14 @@ public class Main extends Application {
     }
 
     private void drawScore() {
-        gc.setFill(Color.BLUEVIOLET);
-        gc.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-        gc.setTextAlign(TextAlignment.JUSTIFY);
-        gc.fillText("Score: " + score, 10, 35);
+//        gc.setFill(Color.BLUEVIOLET);
+//        gc.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+//        gc.setTextAlign(TextAlignment.JUSTIFY);
+//        gc.fillText("Score: " + score, 10, 35);
+
+        gc.setFill(Color.BLACK);
+        gc.setFont(new Font("Digital-7", 30));
+        gc.fillText("Score: " + score, 20, 30);
     }
 
     private void cheat(){
@@ -389,8 +398,4 @@ public class Main extends Application {
         mediaPlayer.play();
     }
 
-    public static void main(String[] args) {
-        Application.launch(args);
-
-    }
 }
