@@ -31,9 +31,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-// Ankita Start ///////////////////////////////
 import javafx.geometry.VPos;
-// Ankita End ///////////////////////////////
 
 public class Main extends Application {
 
@@ -42,12 +40,12 @@ public class Main extends Application {
     private static final int ROWS = 20;
     private static final int COLUMNS = ROWS;
     private static final int SQUARE_SIZE = WIDTH / ROWS;
-    private static final String[] FOODS_IMAGE = new String[]{ "/img/ic_bird.png","/img/ic_orange.png", "/img/ic_apple.png",
-            "/img/ic_cherry.png", "/img/ic_rat.png", "/img/ic_berry.png","/img/ic_rat.png","/img/ic_bird.png","/img/ic_cat.png",
-            "/img/ic_coconut_.png", "/img/ic_peach.png","/img/ic_cat.png", "/img/ic_watermelon.png", "/img/ic_orange.png",
+    private static final String[] FOODS_IMAGE = new String[]{"/img/ic_squirrel.png","/img/ic_bird.png","/img/ic_orange.png",
+            "/img/ic_apple.png", "/img/ic_cherry.png", "/img/ic_rat.png", "/img/ic_fish.png","/img/ic_frog.png",
+            "/img/ic_coconut_.png", "/img/ic_peach.png","/img/ic_cat.png", "/img/ic_watermelon.png",
             "/img/ic_pomegranate.png"};
 
-    private static final Image RESET_IMAGE= new Image("/img/reset.png");//Rishi`
+    private static final Image RESET_IMAGE= new Image("/img/reset.png");
     private static String SNAKE_HEAD_IMAGE ;
     private static String SNAKE_BODY_IMAGE ;
 
@@ -76,15 +74,13 @@ public class Main extends Application {
     private Timeline timeline;
     private int treeCount = 0;
     private boolean isTreeEnabled = false;
-    Text Reset;//Rishi
-    private boolean gameRestart = false;//Rishi
+    Text Reset;
+    private boolean gameRestart = false;
     private boolean cheat_mode = false;
-    // Ankita Start /////////////////////////////
     private double speed = 1.0;
     private boolean interactiveMode = false;
     private boolean ateFood = false;
     private boolean pause = false;
-    // Ankita End ///////////////////////////////
 
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
@@ -104,7 +100,6 @@ public class Main extends Application {
             @Override
             public void handle(KeyEvent event) {
                 KeyCode code = event.getCode();
-                // Ankita Start ///////////////////////////////
                 if (code == KeyCode.RIGHT) {
                     if (currentDirection != LEFT) {
                         currentDirection = RIGHT;
@@ -144,32 +139,25 @@ public class Main extends Application {
                 else if (code == KeyCode.I) {
                     if(!interactiveMode)
                     {
-                        // Pressing key I will display the current speed on the screen.
                         interactiveMode = true;
                     }
                     else
                     {
-                        // Pressing key I again will remove the current speed on the screen.
                         interactiveMode = false;
                     }
                 }
-                // Ankita End ///////////////////////////////
 
                 else if(code == KeyCode.TAB){
                     System.out.println(isTreeEnabled);
                     isTreeEnabled = !isTreeEnabled;
                 }
 
-                else if (code == KeyCode.R) {//Rishi
+                else if (code == KeyCode.A) {
                     gameOver=false;
                     gameRestart=true;
-
-                    // Ankita Start ///////////////////////////////
                     speed = 1.0;
                     interactiveMode = false;
                     timeline.setRate(speed);
-                    // Ankita End ///////////////////////////////
-
                     reset(gc);
                 }
                 else if (code == KeyCode.C) {
@@ -186,16 +174,9 @@ public class Main extends Application {
         generateFood();
         generateTree();
 
-        // Ankita Start ///////////////////////////////
-        //Do not create new timeline.
         timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> run(gc)));
-        // Ankita End ///////////////////////////////
-
         timeline.setCycleCount(Animation.INDEFINITE);
-
-        // Ankita Start ///////////////////////////////
         timeline.setRate(speed);
-        // Ankita End ///////////////////////////////
         timeline.play();
         music();
     }
@@ -226,13 +207,11 @@ public class Main extends Application {
         drawSnake(gc, currentDirection);
         drawScore();
 
-        // Ankita Start ///////////////////////////////
         // If key I is pressed then display current speed
         if (interactiveMode)
         {
             displayCurrentSpeed();
         }
-        // Ankita End ///////////////////////////////
 
         for (int i = snakeBody.size() - 1; i >= 1; i--) {
             snakeBody.get(i).x = snakeBody.get(i - 1).x;
@@ -258,7 +237,6 @@ public class Main extends Application {
         eatFood();
     }
 
-    ////Rishi start
     public void reset(GraphicsContext gc) {
 
         snakeBody.clear();
@@ -278,8 +256,6 @@ public class Main extends Application {
         score=0;
         currentDirection=0;
     }
-
-    /////Rishi End
 
     private void drawBackground(GraphicsContext gc) {
         for (int i = 0; i < ROWS; i++) {
@@ -395,7 +371,6 @@ public class Main extends Application {
         snakeHead.y++;
     }
 
-    // Ankita Start ///////////////////////////////
     // If key F is pressed then it increases the speed.
     private void setSpeedFast() {
 
@@ -467,7 +442,6 @@ public class Main extends Application {
 
         }
     }
-    // Ankita End ///////////////////////////////
 
 
     public void gameOver() {
@@ -500,11 +474,8 @@ public class Main extends Application {
                 score = score + (5*(treeCount));
             }
             treeCount++;
-
-            // Ankita Start ///////////////////////////////
             ateFood = true;
             setSpeedFast();
-            // Ankita End ///////////////////////////////
         }
     }
 
@@ -515,9 +486,7 @@ public class Main extends Application {
 //        gc.fillText("Score: " + score, 10, 35);
 
         gc.setFill(Color.BLACK);
-        // Ankita Start ///////////////////////////////
         gc.setTextAlign(TextAlignment.LEFT);
-        // Ankita End ///////////////////////////////
         gc.setFont(new Font("Digital-7", 30));
         gc.fillText("Score: " + score, 20, 30);
     }
@@ -544,4 +513,3 @@ public class Main extends Application {
     }
 
 }
-
