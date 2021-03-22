@@ -1,5 +1,6 @@
 package sample;
 
+import java.io.File; //Laxmi
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -18,8 +19,8 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.Media; //Laxmi
+import javafx.scene.media.MediaPlayer; //Laxmi
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -28,9 +29,11 @@ import javafx.util.Duration;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import java.awt.Point;
-import java.nio.file.Paths;
+import java.nio.file.Paths; //Laxmi
 import java.util.ArrayList;
 import java.util.List;
+import javafx.geometry.VPos;
+
 
 public class Main extends Application {
 
@@ -76,6 +79,12 @@ public class Main extends Application {
     Text Reset;//Rishi
     private boolean gameRestart = false;//Rishi
     private boolean cheat_mode = false;
+    // Ankita Start /////////////////////////////
+    private double speed = 1.0;
+    private boolean interactiveMode = false;
+    private boolean ateFood = false;
+    private boolean pause = false;
+    // Ankita End ///////////////////////////////
 
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
@@ -95,29 +104,69 @@ public class Main extends Application {
             @Override
             public void handle(KeyEvent event) {
                 KeyCode code = event.getCode();
-                if (code == KeyCode.RIGHT || code == KeyCode.D) {
+                // Ankita Start ///////////////////////////////
+                if (code == KeyCode.RIGHT) {
                     if (currentDirection != LEFT) {
                         currentDirection = RIGHT;
                     }
-                } else if (code == KeyCode.LEFT || code == KeyCode.A) {
+                } else if (code == KeyCode.LEFT) {
                     if (currentDirection != RIGHT) {
                         currentDirection = LEFT;
                     }
-                } else if (code == KeyCode.UP || code == KeyCode.W) {
+                } else if (code == KeyCode.UP) {
                     if (currentDirection != DOWN) {
                         currentDirection = UP;
                     }
-                } else if (code == KeyCode.DOWN || code == KeyCode.S) {
+                } else if (code == KeyCode.DOWN) {
                     if (currentDirection != UP) {
                         currentDirection = DOWN;
                     }
-                } else if(code == KeyCode.TAB){
+                }
+                else if (code == KeyCode.S) {
+                    setSpeedSlow();
+
+                } else if (code == KeyCode.F) {
+                    ateFood = false;
+                    setSpeedFast();
+                }
+                else if (code == KeyCode.P) {
+                    if(pause)
+                    {
+                        resumeGame();
+                        pause = false;
+                    }
+                    else
+                    {
+                        pauseGame();
+                        pause = true;
+                    }
+                }
+                else if (code == KeyCode.I) {
+                    if(!interactiveMode)
+                    {
+                        // Pressing key I will display the current speed on the screen.
+                        interactiveMode = true;
+                    }
+                    else
+                    {
+                        // Pressing key I again will remove the current speed on the screen.
+                        interactiveMode = false;
+                    }
+                }
+                // Ankita End ///////////////////////////////
+                else if(code == KeyCode.TAB){
+                    System.out.println(isTreeEnabled);
                     isTreeEnabled = !isTreeEnabled;
                 }
 
                 else if (code == KeyCode.R) {//Rishi
                     gameOver=false;
                     gameRestart=true;
+                    // Ankita Start ///////////////////////////////
+                    speed = 1.0;
+                    interactiveMode = false;
+                    timeline.setRate(speed);
+                    // Ankita End ///////////////////////////////
                     reset(gc);
                 }
                 else if (code == KeyCode.C) {
@@ -135,10 +184,18 @@ public class Main extends Application {
         generateFood();
         generateTree();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> run(gc)));
+        // Ankita Start ///////////////////////////////
+        //Do not create new timeline.
+        timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> run(gc)));
+        // Ankita End ///////////////////////////////
+
         timeline.setCycleCount(Animation.INDEFINITE);
+
+        // Ankita Start ///////////////////////////////
+        timeline.setRate(speed);
+        // Ankita End ///////////////////////////////
         timeline.play();
-        music();
+        music();//Laxmi
     }
 
     private void run(GraphicsContext gc) {
@@ -167,7 +224,13 @@ public class Main extends Application {
         drawSnake(gc, currentDirection);
         drawScore();
 
-
+        // Ankita Start ///////////////////////////////
+        // If key I is pressed then display current speed
+        if (interactiveMode)
+        {
+            displayCurrentSpeed();
+        }
+        // Ankita End ///////////////////////////////
         for (int i = snakeBody.size() - 1; i >= 1; i--) {
             snakeBody.get(i).x = snakeBody.get(i - 1).x;
             snakeBody.get(i).y = snakeBody.get(i - 1).y;
@@ -331,16 +394,90 @@ public class Main extends Application {
     private void moveDown() {
         snakeHead.y++;
     }
+    // Ankita Start ///////////////////////////////
+    // If key F is pressed then it increases the speed.
+    private void setSpeedFast() {
+
+        if (!gameOver)
+        {
+            speed += 0.25;
+            timeline.setRate(speed);
+
+            if (!ateFood)
+            {
+                gc.setFill(Color.BLACK);
+                gc.setTextAlign(TextAlignment.LEFT);
+                gc.setFont(new Font("", 30));
+                gc.fillText("Increasing the speed", 10, 680);
+            }
+        }
+
+    }
+
+    // If key S is pressed then it decreases the speed.
+    private void setSpeedSlow()
+    {
+        if (!gameOver)
+        {
+            if(speed > 0.25) {
+                speed -= 0.25;
+                timeline.setRate(speed);
+            }
+
+            gc.setFill(Color.BLACK);
+            gc.setTextAlign(TextAlignment.LEFT);
+            gc.setFont(new Font("", 30));
+            gc.fillText("Decreasing the speed", 10, 680);
+        }
+    }
+
+    //If key P is pressed then it pause the game and print the message.
+    private void pauseGame()
+    {
+        if(!gameOver)
+        {
+            timeline.pause();
+            gc.setFill(Color.BLACK);
+            gc.setTextBaseline(VPos.CENTER);
+            gc.setTextAlign(TextAlignment.CENTER);
+            gc.setFont(new Font("", 30));
+            gc.fillText("Paused", WIDTH / 2, HEIGHT / 2);
+            return;
+        }
+    }
+
+    //If key P is pressed again then it resumes the game.
+    private void resumeGame()
+    {
+        if(!gameOver)
+        {
+            timeline.play();
+        }
+    }
+
+    // If key I is pressed then display current speed.
+    private void displayCurrentSpeed(){
+        if(!gameOver)
+        {
+            gc.setFill(Color.BLACK);
+            gc.fillText("Speed: " + speed,530, 30);
+            gc.setTextAlign(TextAlignment.RIGHT);
+            gc.setFont(new Font("Digital-7", 30));
+
+        }
+    }
+    // Ankita End ///////////////////////////////
+
 
     public void gameOver() {
         if (snakeHead.x < 0 || snakeHead.y < 0 || snakeHead.x * SQUARE_SIZE >= WIDTH || snakeHead.y * SQUARE_SIZE >= HEIGHT) {
             gameOver = true;
-            mediaPlayer.stop();
+            mediaPlayer.stop(); //Laxmi
         }
         for(int i=0; i < treeListX.size() ; i++) {
             if (snakeHead.x == treeListX.get(i) && snakeHead.y == treeListY.get(i)) {
                 gameOver = true;
-                mediaPlayer.stop();
+                mediaPlayer.stop(); //Laxmi
                 break;
             }
         }
@@ -363,6 +500,11 @@ public class Main extends Application {
                 score = score + (5*(treeCount));
             }
             treeCount++;
+
+            // Ankita Start ///////////////////////////////
+            ateFood = true;
+            setSpeedFast();
+            // Ankita End ///////////////////////////////
         }
     }
 
@@ -373,13 +515,16 @@ public class Main extends Application {
 //        gc.fillText("Score: " + score, 10, 35);
 
         gc.setFill(Color.BLACK);
+        // Ankita Start ///////////////////////////////
+        gc.setTextAlign(TextAlignment.LEFT);
+        // Ankita End ///////////////////////////////
         gc.setFont(new Font("Digital-7", 30));
         gc.fillText("Score: " + score, 20, 30);
     }
 
     private void cheat(){
         gameOver=false;
-        mediaPlayer.play();
+        mediaPlayer.play(); // Laxmi
         cheat_mode=!cheat_mode;
         score=score/2; // should we round off here?
         snakeBody.clear();
@@ -390,12 +535,18 @@ public class Main extends Application {
         snakeHead = snakeBody.get(0);
     }
 
+     ///// Laxmi Start
     MediaPlayer mediaPlayer;
     public void music() {
         String s = "src/sample/gamemusic.wav";
         Media h = new Media(Paths.get(s).toUri().toString());
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
-    }
+    }   // Laxmi end
 
+    public static void main(String[] args) {
+        Application.launch(args);
+
+    }
 }
+
