@@ -158,7 +158,7 @@ public class Main extends Application {
                     speed = 1.0;
                     interactiveMode = false;
                     timeline.setRate(speed);
-                    reset(gc);
+                    gameRestart(gc);
                 }
                 else if (code == KeyCode.C) {
                     cheat();
@@ -237,7 +237,7 @@ public class Main extends Application {
         eatFood();
     }
 
-    public void reset(GraphicsContext gc) {
+    public void gameRestart(GraphicsContext gc) {
 
         snakeBody.clear();
         for(int i=0;i<3;i++){
