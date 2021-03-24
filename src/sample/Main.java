@@ -547,9 +547,11 @@ public class Main extends Application {
                 score =score-5;
             else
             {
-                gc.setFill(Color.RED);
-                gc.setFont(new Font("Digital-7", 70));
-                gc.fillText("Game Over", WIDTH / 3.5, HEIGHT / 2);
+               
+               gc.fillText("Oops, Game Over!" + "\n Your Final Score is " + score +
+                            "\n Hurry... Press 'c/C' to cheat and save the game" +
+                            "\n *score will be deducted* for cheat",
+                    WIDTH / 3.5, HEIGHT / 2);
                 return;
             }
 
