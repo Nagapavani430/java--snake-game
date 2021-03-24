@@ -65,7 +65,7 @@ public class Main extends Application {
     private Image treeImage;
     private boolean gameOver;
     private int currentDirection;
-    private int score = 0;
+    private int finalScore,score = 0;
     private Scene scene;
     private Timeline timeline;
     private int treeCount = 0;
@@ -77,7 +77,8 @@ public class Main extends Application {
     private boolean interactiveMode = false;
     private boolean ateFood = false;
     private boolean pause = false;
-
+    public  int Crashcount=0;
+    
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
         Group root = new Group();
@@ -179,7 +180,17 @@ public class Main extends Application {
 
     private void run(GraphicsContext gc) {
         if (gameOver) {
-//            gc.setFill(Color.BLUEVIOLET);
+            if(Crashcount<=7 && score>0)
+            {
+
+                Crashcount++;
+                gameOver=false;
+                crashCountdown(gc);
+                LowerScore();
+                 }
+            else if(Crashcount>7 || score<1)
+            {
+               //            gc.setFill(Color.BLUEVIOLET);
             gc.setFill(Color.BLACK);
             gc.setFont(new Font("Digital-7", 25));
 //            gc.fillText("Game Over!" + "\n Final Score: " + score + "\n Press c to Cheat",
@@ -189,6 +200,9 @@ public class Main extends Application {
                             "\n *score will be deducted* for cheat",
                     WIDTH / 3.5, HEIGHT / 2);
             return;
+            }
+
+
         }
 
         drawBackground(gc);
@@ -467,6 +481,7 @@ public class Main extends Application {
             generateFood();
             generateTree();
             score += 5;
+            finalScore=score;
             if(treeCount > 0 && isTreeEnabled){
                 score = score + (5*(treeCount));
             }
@@ -492,7 +507,7 @@ public class Main extends Application {
         gameOver=false;
         mediaPlayer.play();
         cheat_mode=!cheat_mode;
-        score=score/2; // should we round off here?
+        score=finalScore/2; // should we round off here?
         snakeBody.clear();
         for(int i=0;i<3;i++){
             snakeBody.add(new Point(5, ROWS / 2));
@@ -508,5 +523,37 @@ public class Main extends Application {
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
     }
+    public void crashCountdown(GraphicsContext gc ) {
+        
+        Timeline timeline = new Timeline();
+        int i, j;
+        gc.fillText("Save the Snake before score becomes 0", 600 / 7.5 + (30 ), HEIGHT / 4);
+        timeline.pause();
+        AtomicInteger timer = new AtomicInteger();
+        for (i = 0; i < 10; i++) {
+            PauseTransition pause = new PauseTransition(Duration.seconds(i + 1));
+            pause.setOnFinished(actionEvent -> {
+                int val = timer.incrementAndGet();
+
+            });
+            pause.play();
+            if ((snakeHead.x < 20 && snakeHead.x > 0) && (snakeHead.y < 20 && snakeHead.y > 0))
+                return;
+        }
+    }
+        private void LowerScore() {
+
+            if(score>0)
+                score =score-5;
+            else
+            {
+                gc.setFill(Color.RED);
+                gc.setFont(new Font("Digital-7", 70));
+                gc.fillText("Game Over", WIDTH / 3.5, HEIGHT / 2);
+                return;
+            }
+
+
+        }
 
 }
