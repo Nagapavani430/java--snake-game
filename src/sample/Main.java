@@ -292,7 +292,7 @@ public class Main extends Application {
             int treeY = (int) (Math.random() * COLUMNS);
 
             for (Point snake : snakeBody) {
-                if ((snake.getX() == treeX && snake.getY() == treeY) && (foodX == treeX && foodY == treeY)) {
+                if ((snake.getX() == treeX && snake.getY() == treeY) || (foodX == treeX && foodY == treeY)) {
                     continue start;
                 }
             }
@@ -448,6 +448,7 @@ public class Main extends Application {
         for(int i=0; i < treeListX.size() ; i++) {
             if (snakeHead.x == treeListX.get(i) && snakeHead.y == treeListY.get(i)) {
                 gameOver = true;
+                mediaPlayer.stop();
                 break;
             }
         }
