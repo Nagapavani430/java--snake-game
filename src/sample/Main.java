@@ -292,7 +292,7 @@ public class Main extends Application {
             int treeY = (int) (Math.random() * COLUMNS);
 
             for (Point snake : snakeBody) {
-                if ((snake.getX() == treeX && snake.getY() == treeY) && (foodX == treeX && foodY == treeY)) {
+                if ((snake.getX() == treeX && snake.getY() == treeY) || (foodX == treeX && foodY == treeY)) {
                     continue start;
                 }
             }
