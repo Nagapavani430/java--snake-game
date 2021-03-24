@@ -4,9 +4,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -24,7 +21,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import java.awt.Point;
 import java.nio.file.Paths;
@@ -262,10 +258,10 @@ public class Main extends Application {
             for (int j = 0; j < COLUMNS; j++) {
                 if ((i + j) % 2 == 0) {
                     // gc.setFill(Color.web("AAD751"));
-                    gc.setFill(Color.web("WHITE"));//#c3e0b3//  fba01a  //b3bef2
+                    gc.setFill(Color.web("WHITE"));//#c3e0b3//  fba01a  //b3bef2//#d6d8e4(lightwhite)
                 } else {
                     //gc.setFill(Color.web("A2D149"));
-                    gc.setFill(Color.web("#9bd7d5")); //#ffffff//  9bd7d5  //9bd7d5
+                    gc.setFill(Color.web("#abe872")); //#ffffff//  9bd7d5  //9bd7d5 //#0fc700(green)
                 }
                 gc.fillRect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
             }
@@ -296,7 +292,7 @@ public class Main extends Application {
             int treeY = (int) (Math.random() * COLUMNS);
 
             for (Point snake : snakeBody) {
-                if ((snake.getX() == treeX && snake.getY() == treeY) || (foodX == treeX && foodY == treeY)) {
+                if ((snake.getX() == treeX && snake.getY() == treeY) && (foodX == treeX && foodY == treeY)) {
                     continue start;
                 }
             }
