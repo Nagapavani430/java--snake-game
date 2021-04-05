@@ -543,21 +543,18 @@ public class Main extends Application {
                 return;
         }
     }
-        private void LowerScore() {
+        
+    private void LowerScore() {
 
-            if(score>0)
-                score =score-5;
-            else
-            {
-               
-               gc.fillText("Oops, Game Over!" + "\n Your Final Score is " + score +
-                            "\n Hurry... Press 'c/C' to cheat and save the game" +
-                            "\n *score will be deducted* for cheat",
-                    WIDTH / 3.5, HEIGHT / 2);
-                return;
-            }
+    if(score>0)
+        score =score-5;
+    else
+    {
 
-
-        }
+        gc.fillText("Hiii",
+                WIDTH / 3.5, HEIGHT / 2);
+        return;
+    }
+}
 
 }
