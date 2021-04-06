@@ -2,6 +2,7 @@ package sample;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -26,6 +27,7 @@ import java.awt.Point;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.geometry.VPos;
 
@@ -77,6 +79,8 @@ public class Main extends Application {
     private boolean interactiveMode = false;
     private boolean ateFood = false;
     private boolean pause = false;
+
+    public  int Crashcount=0;
 
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
@@ -179,17 +183,14 @@ public class Main extends Application {
 
     private void run(GraphicsContext gc) {
         if (gameOver) {
-//            gc.setFill(Color.BLUEVIOLET);
-            gc.setFill(Color.BLACK);
-            gc.setFont(new Font("Digital-7", 25));
-//            gc.fillText("Game Over!" + "\n Final Score: " + score + "\n Press c to Cheat",
-//                    WIDTH / 3.5, HEIGHT / 2);
-            gc.fillText("Oops, Game Over!" + "\n Your Final Score is " + score +
-                            "\n Hurry... Press 'c/C' to cheat and save the game" +
-                            "\n *score will be deducted* for cheat",
-                    WIDTH / 3.5, HEIGHT / 2);
-            return;
-        }
+                gc.setFill(Color.BLACK);
+                gc.setFont(new Font("Digital-7", 25));
+                gc.fillText("Oops, Game Over!" + "\n Your Final Score is " + score +
+                                "\n Hurry... Press 'c/C' to cheat and save the game" +
+                                "\n *score will be deducted* for cheat",
+                        WIDTH / 3.5, HEIGHT / 2);
+                return;
+            }
 
         drawBackground(gc);
         drawFood(gc);
@@ -257,11 +258,9 @@ public class Main extends Application {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if ((i + j) % 2 == 0) {
-                    // gc.setFill(Color.web("AAD751"));
-                    gc.setFill(Color.web("WHITE"));//#c3e0b3//  fba01a  //b3bef2//#d6d8e4(lightwhite)
+                   gc.setFill(Color.web("#a5ce39"));
                 } else {
-                    //gc.setFill(Color.web("A2D149"));
-                    gc.setFill(Color.web("#abe872")); //#ffffff//  9bd7d5  //9bd7d5 //#0fc700(green)
+                    gc.setFill(Color.web("#d3e283"));
                 }
                 gc.fillRect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
             }
@@ -325,12 +324,14 @@ public class Main extends Application {
         if (currentDirection  == 0){//RIGHT
             SNAKE_HEAD_IMAGE = "img/snake_face_right.png";
             snakeHeadImage = new Image(SNAKE_HEAD_IMAGE);
-            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(), SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
+            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(),
+                    SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
         }
         if (currentDirection  == 1){//LEFT
             SNAKE_HEAD_IMAGE = "img/snake_face_left.png";
             snakeHeadImage = new Image(SNAKE_HEAD_IMAGE);
-            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(), SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
+            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(),
+                    SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
         }
         if (currentDirection  == 2){//UP
             SNAKE_HEAD_IMAGE = "img/snake_face_up.png";
@@ -340,13 +341,15 @@ public class Main extends Application {
         if (currentDirection  == 3){//DOWN
             SNAKE_HEAD_IMAGE = "img/snake_face_down.png";
             snakeHeadImage = new Image(SNAKE_HEAD_IMAGE);
-            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(), SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
+            gc.drawImage(snakeHeadImage, SQUARE_SIZE*snakeHead.getX(),
+                    SQUARE_SIZE*snakeHead.getY(), SQUARE_SIZE+1, SQUARE_SIZE+1);
         }
 
         for (int i = 1; i < snakeBody.size(); i++) {
             SNAKE_BODY_IMAGE = "img/snake_body.png";
             snakeBodyImage = new Image(SNAKE_BODY_IMAGE);
-            gc.drawImage(snakeBodyImage , snakeBody.get(i).getX() * SQUARE_SIZE, snakeBody.get(i).getY() * SQUARE_SIZE,
+            gc.drawImage(snakeBodyImage , snakeBody.get(i).getX() * SQUARE_SIZE,
+                    snakeBody.get(i).getY() * SQUARE_SIZE,
                     SQUARE_SIZE-3, SQUARE_SIZE-3);
         }
     }
@@ -508,5 +511,4 @@ public class Main extends Application {
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
     }
-
 }
