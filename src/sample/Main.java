@@ -27,7 +27,6 @@ import java.awt.Point;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.geometry.VPos;
 
@@ -67,7 +66,7 @@ public class Main extends Application {
     private Image treeImage;
     private boolean gameOver;
     private int currentDirection;
-    private int score = 0;
+    private int finalScore,score = 0;
     private Scene scene;
     private Timeline timeline;
     private int treeCount = 0;
@@ -79,8 +78,6 @@ public class Main extends Application {
     private boolean interactiveMode = false;
     private boolean ateFood = false;
     private boolean pause = false;
-
-    public  int Crashcount=0;
 
     public void createScene(Stage primaryStage){
         primaryStage.setTitle("Snake");
@@ -470,6 +467,7 @@ public class Main extends Application {
             generateFood();
             generateTree();
             score += 5;
+            finalScore=score;
             if(treeCount > 0 && isTreeEnabled){
                 score = score + (5*(treeCount));
             }
