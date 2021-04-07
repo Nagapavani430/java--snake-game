@@ -249,6 +249,7 @@ public class Main extends Application {
         gc.drawImage(RESET_IMAGE,250,250,250,250);
         score=0;
         currentDirection=0;
+        mediaPlayer.play();
     }
 
     private void drawBackground(GraphicsContext gc) {
@@ -456,6 +457,7 @@ public class Main extends Application {
         for (int i = 1; i < snakeBody.size(); i++) {
             if (snakeHead.x == snakeBody.get(i).getX() && snakeHead.getY() == snakeBody.get(i).getY()) {
                 gameOver = true;
+                mediaPlayer.stop();
                 break;
             }
         }
