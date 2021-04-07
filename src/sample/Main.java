@@ -410,6 +410,7 @@ public class Main extends Application {
         if(!gameOver)
         {
             timeline.pause();
+            mediaPlayer.stop();
             gc.setFill(Color.BLACK);
             gc.setTextBaseline(VPos.CENTER);
             gc.setTextAlign(TextAlignment.CENTER);
@@ -425,6 +426,7 @@ public class Main extends Application {
         if(!gameOver)
         {
             timeline.play();
+            mediaPlayer.play();
         }
     }
 
