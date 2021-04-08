@@ -22,15 +22,23 @@ The Snake Game uses four arrows-key to control the movement or direction of the 
 
 Action keys:
 
-C :Cheat the game 						                                    	A: Restart the game
+C :Cheat the game 		
 
-F: To increase the speed of the game	                                     	S :To decrease the speed of the game
+A: Restart the game
 
-P:To  pause the game						                                   Tab:To display Tree		
+F: To increase the speed of the game	  
 
-P:To resume the game  				                         	            	Tab:To hide Tree
+S :To decrease the speed of the game
+
+P:To  pause the game	
+
+P:To resume the game  	
 
 I:To know the current speed of the game
+
+Tab:To display Tree	
+
+Tab:To hide Tree
 
 
  
