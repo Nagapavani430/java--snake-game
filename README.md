@@ -16,7 +16,7 @@ Actions:
 
 Action keys:
 
-     C :Cheat the game 		
+    C :Cheat the game 		
 
     A: Restart the game
 
