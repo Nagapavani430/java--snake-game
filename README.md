@@ -4,7 +4,7 @@ Dependencies:
 1.Java-SDK-version: 15.0.2 OR 16 both works fine.
 
 2.Javafx =16 .
-      Link to download javafx
+      Link to download javafx : 
       https://gluonhq.com/products/javafx/
 
 
