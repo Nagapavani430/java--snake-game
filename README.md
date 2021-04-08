@@ -52,8 +52,8 @@ Project setup:
    <img width="719" alt="Screenshot 2021-04-07 at 7 39 30 PM" src="https://user-images.githubusercontent.com/78198509/113964462-67826780-97e0-11eb-9878-60d4a4d776d7.png">
 
 
-3.Now go to Run>Edit configuration
-              And  add below one
+3.Now go to Run>Edit configuration.
+              Add this line with your path:  
             --module-path /Users/farhat/Downloads/javafx-sdk-16/lib --add-modules javafx.controls,javafx.fxml,,javafx.media
 
 
