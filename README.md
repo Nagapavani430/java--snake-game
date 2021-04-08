@@ -42,4 +42,37 @@ Tab:To display Tree
 Tab:To hide Tree
 
 
+Project setup:
+
+Download Javafx in any folder : 
+Example
+/Users/farhat/Downloads/javafx-sdk-16
+
+Open the code in your IDE
+
+Go to File>ProjectStructure>Libraries
+
+Here add you javafx lib file path like this
+
+</Users/farhat/Downloads/javafx-sdk-16/lib>
+
+<img width="719" alt="Screenshot 2021-04-07 at 7 39 30 PM" src="https://user-images.githubusercontent.com/78198509/113964462-67826780-97e0-11eb-9878-60d4a4d776d7.png">
+
+
+Now go to Run>Edit configuration
+And  add below one
+ --module-path /Users/farhat/Downloads/javafx-sdk-16/lib --add-modules javafx.controls,javafx.fxml,,javafx.media
+
+
+<img width="1047" alt="Screenshot 2021-04-07 at 7 40 56 PM" src="https://user-images.githubusercontent.com/78198509/113964503-7b2dce00-97e0-11eb-8ea0-b68a2fa95fc0.png">
+
+Run Controller.py file to run the code:
+
+
+<img width="268" alt="Screenshot 2021-04-07 at 8 33 46 PM" src="https://user-images.githubusercontent.com/78198509/113964574-96004280-97e0-11eb-97bc-8031c884a433.png">
+
+
+
+
+
  
