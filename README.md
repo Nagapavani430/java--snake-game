@@ -2,6 +2,7 @@
 Initial Project Setup:
 
 Java-SDK-version: 15.0.2 OR 16 both works fine.
+
 Javafx =16
 
 Add these line in your Intellij configuration:
