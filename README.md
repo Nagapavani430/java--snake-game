@@ -34,7 +34,7 @@ P:To  pause the game
 
 P:To resume the game  	
 
-I:To know the current speed of the game
+I: To know the current speed of the game
 
 Tab:To display Tree	
 
