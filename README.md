@@ -10,6 +10,7 @@ Add these line in your Intellij configuration:
 Note:  Please add your javafx folder here -> /Users/farhat/Downloads/javafx-sdk-16/lib
 
 To run the code use the file : Controller.py file.
+
 All functions implementation are mentioned in the "Main.py " file
 
 The Snake Game uses four arrows-key to control the movement or direction of the snake like:
