@@ -29,5 +29,4 @@ P:To resume the game  				                         		Tab:To hide Tree
 I:To know the current speed of the game
 
 
-Thank you :)
  
