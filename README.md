@@ -2,7 +2,7 @@
 Initial Project Setup:
 
 Java-SDK-version: 15.0.2
-Javafx =15
+Javafx =16
 
 Add these line in your Intellij configuration:
 --module-path /Users/farhat/Downloads/javafx-sdk-16/lib --add-modules javafx.controls,javafx.fxml,,javafx.media
