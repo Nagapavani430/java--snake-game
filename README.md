@@ -1,17 +1,17 @@
 # java--snake-game
 Dependencies:
 
-Java-SDK-version: 15.0.2 OR 16 both works fine.
+1.Java-SDK-version: 15.0.2 OR 16 both works fine.
 
-Javafx =16
+2.Javafx =16
 
 Actions:
 
-The Snake Game uses four arrows-key to control the movement or direction of the snake like:
-    Up      
-    Down
-    Left
-    Right.
+    The Snake Game uses four arrows-key to control the movement or direction of the snake like:
+       Up      
+       Down
+       Left
+       Right.
 
 
 Action keys:
@@ -38,8 +38,8 @@ Tab:To hide Tree
 Project setup:
 
 1.Download Javafx in any folder : 
-Example
-/Users/farhat/Downloads/javafx-sdk-16
+     Example
+    /Users/farhat/Downloads/javafx-sdk-16
 
 2.Open the code in your IDE
 
@@ -53,8 +53,8 @@ Example
 
 
 3.Now go to Run>Edit configuration
-      And  add below one
-       --module-path /Users/farhat/Downloads/javafx-sdk-16/lib --add-modules javafx.controls,javafx.fxml,,javafx.media
+           And  add below one
+         --module-path /Users/farhat/Downloads/javafx-sdk-16/lib --add-modules javafx.controls,javafx.fxml,,javafx.media
 
 
    <img width="1047" alt="Screenshot 2021-04-07 at 7 40 56 PM" src="https://user-images.githubusercontent.com/78198509/113964503-7b2dce00-97e0-11eb-8ea0-b68a2fa95fc0.png">
